@@ -15,11 +15,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject laserPrefab;
 
+    [SerializeField]
+    private GameObject tripleShotPrefab;
+
     private float fireRare = 0.5f;
 
     private float nextFire = 0.0f;
 
     private int hp = 3;
+    [SerializeField]
+    private bool tripleShotIsActives = false;
 
     private SpawnManagerController spawnManager;
     void Start()
@@ -72,7 +77,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire)
         {
             nextFire = Time.time + fireRare;
-            Instantiate(laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+            if(tripleShotIsActives == false)
+            {
+                Instantiate(laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(tripleShotPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+            }
         }
     }
     public void TakeDamage()
@@ -84,5 +96,17 @@ public class PlayerController : MonoBehaviour
             spawnManager.OnPlayerDead();
             Destroy(this.gameObject);
         }
+    }
+
+    public void GetPowerUp()
+    {
+        tripleShotIsActives = true;
+        StartCoroutine(StopPowerUp());
+    }
+
+    IEnumerator StopPowerUp()
+    {
+        yield return new WaitForSeconds(5f);
+        tripleShotIsActives = false;
     }
 }

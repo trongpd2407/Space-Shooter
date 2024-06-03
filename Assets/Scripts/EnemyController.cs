@@ -10,10 +10,8 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        transform.position = new Vector3(1f, 8f, 0f);
     }
 
-    // Update is called once per frame
     void Update()
     {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
