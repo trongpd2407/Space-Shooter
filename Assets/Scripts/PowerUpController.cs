@@ -5,7 +5,10 @@ using UnityEngine;
 public class PowerUpController : MonoBehaviour
 {
     private float speed = 5f;
-
+ 
+    // id : triple shot = 0, speed =1, shield = 2
+    [SerializeField]
+    private int powerUpId;
     void Start()
     {
         
@@ -24,7 +27,20 @@ public class PowerUpController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag.Equals("Player") ){
-            collision.transform.GetComponent<PlayerController>().GetPowerUp();
+            PlayerController playerController = collision.transform.GetComponent<PlayerController>();
+            switch (powerUpId)
+            {
+                case 0:
+                    playerController.TripleShotActive();
+
+                    break;
+                case 1:
+                    playerController.SpeedBoostActive();
+                    break;
+                case 2:
+                    Debug.Log("Shield");
+                    break;
+            }
             Destroy(this.gameObject);
         }
     }

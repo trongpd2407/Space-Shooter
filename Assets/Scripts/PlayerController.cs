@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private float speed = 10f;
-
+    private float speedBoost = 2f;
     private float horizontalInput;
     private float verticalInput;
 
@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
     private int hp = 3;
     [SerializeField]
     private bool tripleShotIsActives = false;
+
+    [SerializeField]
+    private bool speedBoostIsActive = false;
 
     private SpawnManagerController spawnManager;
     void Start()
@@ -50,7 +53,13 @@ public class PlayerController : MonoBehaviour
         verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
         direction = direction.normalized;
-        transform.Translate(direction * speed * Time.deltaTime);
+        //Checking speed powerup
+        if(speedBoostIsActive )
+        {
+            transform.Translate(direction * speed * speedBoost * Time.deltaTime);
+        }else transform.Translate(direction * speed * Time.deltaTime);
+
+        // checking out of bound
         if (transform.position.x > 9)
         {
             transform.position = new Vector3(9, transform.position.y, transform.position.z);
@@ -98,15 +107,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void GetPowerUp()
+    public void TripleShotActive()
     {
         tripleShotIsActives = true;
-        StartCoroutine(StopPowerUp());
+        StartCoroutine(StopTripleshotPowerUp());
     }
-
-    IEnumerator StopPowerUp()
+    public void SpeedBoostActive()
+    {
+        speedBoostIsActive = true;
+        StartCoroutine(StopSpeedPowerUp());
+    }
+    IEnumerator StopTripleshotPowerUp()
     {
         yield return new WaitForSeconds(5f);
         tripleShotIsActives = false;
+    }
+    IEnumerator StopSpeedPowerUp()
+    {
+        yield return new WaitForSeconds(5f);
+        speedBoostIsActive = false;
     }
 }
