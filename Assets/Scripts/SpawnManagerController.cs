@@ -54,7 +54,7 @@ public class SpawnManagerController : MonoBehaviour
 
             GameObject newPowerUp = Instantiate(powerUpPrefab[Random.Range(0,3)], position, Quaternion.identity);
             newPowerUp.transform.parent = powerUpContainer.transform;
-            yield return new WaitForSeconds(15f);
+            yield return new WaitForSeconds(5f);
         }
 
     }

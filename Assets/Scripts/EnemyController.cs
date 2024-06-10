@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Player")
         {
             other.transform.GetComponent<PlayerController>().TakeDamage();
-            Debug.Log(other.tag + "va cham ");
+ 
             Destroy(this.gameObject);
         }
 

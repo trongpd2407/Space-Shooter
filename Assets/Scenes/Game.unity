@@ -155,8 +155,10 @@ MonoBehaviour:
   speed: 8
   laserPrefab: {fileID: 7607069338944136070, guid: f5b988ba1d19bd8488b048e408ae7d5b, type: 3}
   tripleShotPrefab: {fileID: 818699467217746928, guid: c6e6968e0bed22e4b901dd5309a67c39, type: 3}
+  shieldPrefab: {fileID: 3140066411746572706, guid: f978dcb5b48406c4786ea24e18d0ebb4, type: 3}
   tripleShotIsActives: 0
   speedBoostIsActive: 0
+  shieldIsActive: 0
 --- !u!212 &621396492
 SpriteRenderer:
   m_ObjectHideFlags: 0

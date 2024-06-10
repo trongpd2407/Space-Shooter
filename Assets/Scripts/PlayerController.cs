@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject tripleShotPrefab;
 
+    [SerializeField]   
+    private GameObject shieldPrefab;
+
     private float fireRare = 0.5f;
 
     private float nextFire = 0.0f;
@@ -28,6 +31,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private bool speedBoostIsActive = false;
+
+    [SerializeField]
+    private bool shieldIsActive = false;
 
     private SpawnManagerController spawnManager;
     void Start()
@@ -98,7 +104,13 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeDamage()
     {
-        hp--;
+        if (shieldIsActive == true)
+        {
+            shieldIsActive = false;
+            StopCoroutine(StopShieldPowerUp());
+            Destroy(transform.Find("Shield(Clone)").gameObject);
+        }
+        else hp--;
         Debug.Log(hp);
         if (hp < 1)
         {
@@ -117,6 +129,15 @@ public class PlayerController : MonoBehaviour
         speedBoostIsActive = true;
         StartCoroutine(StopSpeedPowerUp());
     }
+
+    public void ShieldActive()
+    {
+        shieldIsActive = true;
+        GameObject shield = Instantiate(shieldPrefab, transform.position, Quaternion.identity);
+        shield.transform.parent = this.transform;
+        StartCoroutine(StopShieldPowerUp());
+    }
+
     IEnumerator StopTripleshotPowerUp()
     {
         yield return new WaitForSeconds(5f);
@@ -127,4 +148,15 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(5f);
         speedBoostIsActive = false;
     }
+    IEnumerator StopShieldPowerUp()
+    {
+        yield return new WaitForSeconds(5f);
+        if (shieldIsActive)
+        {
+            Destroy(transform.Find("Shield(Clone)").gameObject);
+        }
+        shieldIsActive = false;
+        
+    }
+
 }

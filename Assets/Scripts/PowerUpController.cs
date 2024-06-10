@@ -38,7 +38,7 @@ public class PowerUpController : MonoBehaviour
                     playerController.SpeedBoostActive();
                     break;
                 case 2:
-                    Debug.Log("Shield");
+                    playerController.ShieldActive();
                     break;
             }
             Destroy(this.gameObject);
