@@ -35,9 +35,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private bool shieldIsActive = false;
 
+    [SerializeField]
+    private int score = 0;
+
     private SpawnManagerController spawnManager;
+
+    private UIManager uiManager;
     void Start()
     {
+        uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManagerController>();
         if(spawnManager == null ) {
             Debug.Log("Spawn Null");
@@ -111,12 +117,13 @@ public class PlayerController : MonoBehaviour
             Destroy(transform.Find("Shield(Clone)").gameObject);
         }
         else hp--;
-        Debug.Log(hp);
+        uiManager.UpdateLiveSprite(hp);
         if (hp < 1)
         {
             spawnManager.OnPlayerDead();
             Destroy(this.gameObject);
         }
+       
     }
 
     public void TripleShotActive()
@@ -157,6 +164,11 @@ public class PlayerController : MonoBehaviour
         }
         shieldIsActive = false;
         
+    }
+    public void AddScore(int point)
+    {
+        score += point;
+        uiManager.UpdateScore(score);
     }
 
 }

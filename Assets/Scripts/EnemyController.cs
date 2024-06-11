@@ -7,9 +7,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float speed = 8f;
 
+    private PlayerController player;
 
     void Start()
     {
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     void Update()
@@ -25,14 +27,17 @@ public class Enemy : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            other.transform.GetComponent<PlayerController>().TakeDamage();
- 
+            player.TakeDamage();
             Destroy(this.gameObject);
         }
 
         if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
+            if(player != null)
+            {
+                player.AddScore(10);
+            }
             Destroy(this.gameObject);
         }
     }
