@@ -12,25 +12,22 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Sprite[] liveSprites;
 
+    [SerializeField]
+    private TMP_Text gameOverText;
+
+    [SerializeField]
+    private TMP_Text restartText;
+
+    private GameManager gameManager;
+
     void Start()
     {
-        if (liveImage != null && liveSprites.Length > 3)
-        {
-            liveImage.sprite = liveSprites[3];
-        }
-        else
-        {
-            Debug.LogError("LiveImage or LiveSprites not set properly in the inspector or liveSprites array length is insufficient.");
-        }
+        liveImage.sprite = liveSprites[3];
+        gameOverText.gameObject.SetActive(false);
+        restartText.gameObject.SetActive(false);
 
-        if (scoreText != null)
-        {
-            scoreText.text = "Score: " + 0;
-        }
-        else
-        {
-            Debug.LogError("ScoreText not set in the inspector.");
-        }
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        scoreText.text = "Score: " + 0;
     }
 
     // Update is called once per frame
@@ -45,5 +42,30 @@ public class UIManager : MonoBehaviour
     public void UpdateLiveSprite(int currentLive)
     {
         liveImage.sprite = liveSprites[currentLive];
+
+        if(currentLive < 1)
+        {
+            GameOverSequence();
+        }
+    }
+
+    void GameOverSequence()
+    {
+        gameManager.GameOver();
+        gameOverText.gameObject.SetActive(true);
+        restartText.gameObject.SetActive(true);
+        StartCoroutine(GameOverFlick());
+    }
+    IEnumerator GameOverFlick()
+    {
+        while(true)
+        {
+            gameOverText.text = "Game Over";
+            yield return new WaitForSeconds(0.5f);
+            gameOverText.text = "";
+            yield return new WaitForSeconds(0.5f);
+        }
+        
+
     }
 }
